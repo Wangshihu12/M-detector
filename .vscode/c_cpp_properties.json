@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/rosworkspace/devel/include/**",
+        "/catkin_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/catkin_ws/src/fast_gicp/include/**",
+        "/catkin_ws/src/goslam_lio_mid360/include/**",
+        "/catkin_ws/src/rpg_vikit/vikit_common/include/**",
+        "/catkin_ws/src/rpg_vikit/vikit_ros/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

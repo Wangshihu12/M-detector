@@ -25,7 +25,8 @@ void DynObjCluster::Init()
     umap_insidebox.reserve(GridMapsize);
     umap_insidebox.resize(GridMapsize);
     std::cout << "clustering init finish------------" << std::endl;
-    if(out_file != "") out.open(out_file, std::ios::out  | std::ios::binary);
+    if (out_file != "")
+        out.open(out_file, std::ios::out | std::ios::binary);
 }
 
 void DynObjCluster::Clusterprocess(std::vector<int> &dyn_tag, pcl::PointCloud<PointType> event_point, const pcl::PointCloud<PointType> &raw_point, const std_msgs::Header &header_in, const Eigen::Matrix3d odom_rot_in, const Eigen::Vector3d odom_pos_in)
@@ -87,8 +88,8 @@ void DynObjCluster::GetClusterResult(pcl::PointCloud<PointType>::Ptr points_in, 
 void DynObjCluster::GetClusterResult_voxel(pcl::PointCloud<PointType>::Ptr points_in, std::vector<Point_Cloud> &umap_in, std::vector<std::vector<int>> &voxel_clusters, std::unordered_set<int> &used_map_set)
 {
     ros::Time t0 = ros::Time::now();
-    if ( (out_file != "") && points_in->size() < 2)
-    {   
+    if ((out_file != "") && points_in->size() < 2)
+    {
         out << (ros::Time::now() - t0).toSec() << " ";
         return;
     }
@@ -99,7 +100,8 @@ void DynObjCluster::GetClusterResult_voxel(pcl::PointCloud<PointType>::Ptr point
     cluster.setMinClusterSize(cluster_min_pixel_number);
     cluster.createVoxelMap(umap_in, used_map_set);
     cluster.extract(voxel_clusters);
-    if(out_file != "") out << (ros::Time::now() - t0).toSec() << " ";
+    if (out_file != "")
+        out << (ros::Time::now() - t0).toSec() << " ";
 }
 
 void DynObjCluster::PubClusterResult_voxel(std::vector<int> &dyn_tag, std_msgs::Header current_header, bbox_t &bbox, double delta,
@@ -262,7 +264,6 @@ void DynObjCluster::PubClusterResult_voxel(std::vector<int> &dyn_tag, std_msgs::
         used_map_set.merge(used_map_set_vec[bbox_i]);
     }
 
-
     ros::Time t2 = ros::Time::now();
     for (int ite = 0; ite < raw_point.size(); ite++)
     {
@@ -331,7 +332,7 @@ void DynObjCluster::PubClusterResult_voxel(std::vector<int> &dyn_tag, std_msgs::
     std::vector<double> ground_estimate_total_time(index_bbox.size(), 0.0);
     std::vector<double> region_growth_time(index_bbox.size(), 0.0);
     std::for_each(std::execution::par, index_bbox.begin(), index_bbox.end(), [&](const int &k)
-    {   
+                  {   
         geometry_msgs::PoseWithCovarianceStamped center = bbox.Center[k];
         float x_size = center.pose.covariance[3*6+3];
         float y_size = center.pose.covariance[4*6+4];
@@ -370,15 +371,17 @@ void DynObjCluster::PubClusterResult_voxel(std::vector<int> &dyn_tag, std_msgs::
             cluster_points += bbox.Point_cloud[k];
             true_ground += bbox.true_ground[k];
         } });
-    double total_ground_estimate_total_time=0.0;
-    double total_region_growth_time=0.0;
-    for(int i = 0; i< index_bbox.size(); i++)
+    double total_ground_estimate_total_time = 0.0;
+    double total_region_growth_time = 0.0;
+    for (int i = 0; i < index_bbox.size(); i++)
     {
         total_ground_estimate_total_time += ground_estimate_total_time[i];
         total_region_growth_time += region_growth_time[i];
     }
-    if(out_file != "") out << total_ground_estimate_total_time << " ";
-    if(out_file != "") out << total_region_growth_time << " ";
+    if (out_file != "")
+        out << total_ground_estimate_total_time << " ";
+    if (out_file != "")
+        out << total_region_growth_time << " ";
 
     // cluster_vis_high.publish(numbers);
 
@@ -391,7 +394,8 @@ void DynObjCluster::PubClusterResult_voxel(std::vector<int> &dyn_tag, std_msgs::
     }
 
     double cluster_time = (ros::Time::now() - cluster_begin).toSec() - total_region_growth_time;
-    if(out_file != "") out << cluster_time << std::endl;
+    if (out_file != "")
+        out << cluster_time << std::endl;
 }
 
 bool DynObjCluster::ground_estimate(const pcl::PointCloud<PointType> &ground_pcl, const Eigen::Vector3f &world_z, Eigen::Vector3f &ground_norm, Eigen::Vector4f &ground_plane, pcl::PointCloud<PointType> &true_ground, std::unordered_set<int> &extend_pixels)
